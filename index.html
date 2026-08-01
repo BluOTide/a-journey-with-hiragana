@@ -13,232 +13,160 @@
             --accent-gold: #f7b733;
             --accent-purple: #bd93f9;
             --text-sub: #a0a5c0;
-            --danger: #dc3545;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             height: 100vh;
             background-color: var(--bg-color);
             color: #ffffff;
             font-family: 'Courier New', Courier, monospace;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            user-select: none;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            overflow: hidden; user-select: none;
         }
 
         #game-box {
             position: relative;
-            width: 900px;
-            max-width: 95vw;
-            height: 640px;
+            width: 900px; max-width: 95vw;
+            height: 650px;
             background-color: var(--card-bg);
             border: 3px solid var(--accent-cyan);
             border-radius: 12px;
             box-shadow: 0 0 25px rgba(102, 252, 241, 0.2);
-            display: flex;
-            flex-direction: column;
+            display: flex; flex-direction: column;
             overflow: hidden;
         }
 
-        /* Top Header Navigation */
+        /* Top Bar */
         #top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 20px;
             background: rgba(0, 0, 0, 0.5);
             border-bottom: 2px solid rgba(102, 252, 241, 0.3);
-            font-size: 1.1rem;
-            font-weight: bold;
+            font-size: 1rem; font-weight: bold;
         }
 
-        .bar-group {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
+        .bar-group { display: flex; align-items: center; gap: 15px; }
         .stat-val { color: var(--accent-gold); }
 
         .btn {
-            background: transparent;
-            color: var(--accent-cyan);
-            border: 2px solid var(--accent-cyan);
-            border-radius: 6px;
-            padding: 5px 12px;
-            font-family: inherit;
-            font-size: 0.85rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
+            background: transparent; color: var(--accent-cyan);
+            border: 2px solid var(--accent-cyan); border-radius: 6px;
+            padding: 4px 10px; font-family: inherit; font-size: 0.85rem;
+            font-weight: bold; cursor: pointer; transition: all 0.2s;
         }
 
-        .btn:hover {
-            background: var(--accent-cyan);
-            color: #000;
-            box-shadow: 0 0 10px var(--accent-cyan);
-        }
+        .btn:hover { background: var(--accent-cyan); color: #000; }
+        .btn.active { background: var(--accent-purple); border-color: var(--accent-purple); color: #000; }
 
-        .btn.active {
-            background: var(--accent-purple);
-            border-color: var(--accent-purple);
-            color: #000;
-            box-shadow: 0 0 10px var(--accent-purple);
-        }
-
-        /* Top-Down Map Stage View */
-        #stage-view {
-            position: relative;
-            height: 260px;
-            background: #0d1b1e;
+        /* Overworld Table-Top Map */
+        #map-container {
+            position: relative; height: 320px; background: #0c1520;
             border-bottom: 2px solid rgba(255,255,255,0.1);
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         #map-canvas {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            background-image: radial-gradient(#1f3a40 1.5px, transparent 1.5px);
-            background-size: 30px 30px;
+            position: relative; width: 100%; height: 100%;
+            background-image: radial-gradient(#1e2d42 2px, transparent 2px);
+            background-size: 24px 24px;
         }
 
-        #location-header {
-            position: absolute;
-            top: 12px;
-            left: 20px;
-            font-size: 1.2rem;
-            color: var(--accent-gold);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            z-index: 10;
-            background: rgba(0,0,0,0.6);
-            padding: 4px 10px;
-            border-radius: 4px;
-            border: 1px solid var(--accent-gold);
-        }
-
-        /* Top-down Overworld Elements */
-        .map-node {
-            position: absolute;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transform: translate(-50%, -50%);
-            z-index: 5;
-        }
-
-        .node-icon {
-            font-size: 2.2rem;
-            filter: drop-shadow(0 0 5px rgba(255,255,255,0.4));
-        }
-
-        .node-label {
-            font-size: 0.75rem;
-            color: var(--text-sub);
-            background: rgba(0,0,0,0.8);
-            padding: 1px 6px;
-            border-radius: 4px;
-            margin-top: 2px;
-            white-space: nowrap;
-        }
-
-        .map-node.active-dest .node-label {
-            color: var(--accent-gold);
-            font-weight: bold;
-        }
-
-        /* Top-Down Player Token */
-        #player-token {
-            position: absolute;
-            font-size: 2.2rem;
-            transform: translate(-50%, -50%);
-            transition: left 0.3s ease-out, top 0.3s ease-out;
-            z-index: 20;
-            filter: drop-shadow(0 0 8px var(--accent-cyan));
-        }
-
-        /* Path Line */
-        #path-line {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1;
+        /* Path Lines SVG */
+        #path-svg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
         }
 
-        /* Interactive Panel */
+        .map-line {
+            stroke: #2a415e; stroke-width: 4; stroke-dasharray: 6,6;
+        }
+
+        .map-line.active-path {
+            stroke: var(--accent-cyan); stroke-dasharray: none;
+        }
+
+        /* Map Destinations */
+        .node {
+            position: absolute; transform: translate(-50%, -50%);
+            display: flex; flex-direction: column; align-items: center;
+            z-index: 5; transition: transform 0.2s;
+        }
+
+        .node-icon {
+            font-size: 2.2rem; filter: drop-shadow(0 0 6px rgba(0,0,0,0.8));
+        }
+
+        .node-label {
+            font-size: 0.75rem; background: rgba(0,0,0,0.85);
+            padding: 2px 8px; border-radius: 4px; border: 1px solid var(--text-sub);
+            color: #fff; white-space: nowrap; margin-top: 2px;
+        }
+
+        .node.completed .node-label { border-color: var(--accent-green); color: var(--accent-green); }
+        .node.target .node-label { border-color: var(--accent-gold); color: var(--accent-gold); font-weight: bold; }
+
+        /* Player Character Token */
+        #player-token {
+            position: absolute; font-size: 2.2rem;
+            transform: translate(-50%, -50%);
+            transition: left 0.3s ease-out, top 0.3s ease-out;
+            z-index: 20; filter: drop-shadow(0 0 10px var(--accent-cyan));
+        }
+
+        /* Directional Choice Indicators (Hub Mode) */
+        .dir-choice {
+            position: absolute; transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9); border: 2px solid var(--accent-gold);
+            border-radius: 8px; padding: 4px 10px; display: flex;
+            flex-direction: column; align-items: center; z-index: 15;
+            box-shadow: 0 0 10px rgba(247, 183, 51, 0.4);
+        }
+
+        .dir-key { color: var(--accent-gold); font-weight: bold; font-size: 1.2rem; }
+        .dir-label { font-size: 0.7rem; color: var(--text-sub); }
+
+        /* Interactive Dialogue Panel */
         #interactive-panel {
-            flex: 1;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0, 0, 0, 0.2);
-            text-align: center;
+            flex: 1; padding: 15px 20px; display: flex;
+            flex-direction: column; align-items: center; justify-content: center;
+            background: rgba(0, 0, 0, 0.25); text-align: center;
         }
 
         #dialogue-speaker {
-            font-size: 0.95rem;
-            color: var(--accent-cyan);
-            margin-bottom: 5px;
-            font-weight: bold;
+            font-size: 0.95rem; color: var(--accent-cyan);
+            margin-bottom: 4px; font-weight: bold;
         }
 
         #mode-instruction {
-            font-size: 1.05rem;
-            color: var(--text-sub);
-            margin-bottom: 12px;
+            font-size: 1rem; color: var(--text-sub); margin-bottom: 10px;
         }
 
-        /* Sentence & Furigana Display */
+        /* Sentence Display & Furigana */
         #sentence-container {
-            display: flex;
-            gap: 10px;
-            font-size: 2.3rem;
-            margin-bottom: 15px;
-            min-height: 80px;
-            align-items: flex-end;
-            justify-content: center;
+            display: flex; gap: 8px; font-size: 2.2rem;
+            margin-bottom: 10px; min-height: 75px;
+            align-items: flex-end; justify-content: center; flex-wrap: wrap;
         }
 
         ruby {
-            ruby-position: over;
-            display: inline-flex;
-            flex-direction: column-reverse;
-            align-items: center;
+            ruby-position: over; display: inline-flex;
+            flex-direction: column-reverse; align-items: center;
         }
 
         rt {
-            font-size: 1.1rem;
-            color: var(--accent-purple);
-            font-weight: bold;
-            letter-spacing: 2px;
-            margin-bottom: 4px;
+            font-size: 1.05rem; color: var(--accent-purple);
+            font-weight: bold; letter-spacing: 1px; margin-bottom: 3px;
         }
 
-        rb {
-            color: #ffffff;
-            font-weight: bold;
-        }
+        rb { color: #ffffff; font-weight: bold; }
 
         .char-unit {
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
+            display: inline-flex; flex-direction: column;
+            align-items: center; position: relative;
         }
 
         .char-unit.completed {
@@ -247,80 +175,49 @@
         }
 
         .char-unit.active {
-            color: var(--accent-gold) !important;
-            transform: scale(1.15);
+            color: var(--accent-gold) !important; transform: scale(1.15);
         }
 
-        .char-unit.active rt {
-            color: var(--accent-gold) !important;
-        }
+        .char-unit.active rt { color: var(--accent-gold) !important; }
 
-        /* Key Hint Badge */
         .key-hint {
-            font-size: 0.75rem;
-            background-color: var(--accent-purple);
-            color: #000;
-            font-weight: bold;
-            padding: 2px 5px;
-            border-radius: 4px;
-            margin-top: 5px;
-            display: none;
+            font-size: 0.7rem; background-color: var(--accent-purple);
+            color: #000; font-weight: bold; padding: 1px 5px;
+            border-radius: 4px; margin-top: 4px; display: none;
         }
 
-        .show-hints .key-hint {
-            display: inline-block;
-        }
+        .show-hints .key-hint { display: inline-block; }
 
         #english-translation {
-            font-size: 1.2rem;
-            color: var(--accent-cyan);
-            font-style: italic;
+            font-size: 1.1rem; color: var(--accent-cyan); font-style: italic;
         }
 
-        /* Overlay Modal */
+        /* Screen Overlay */
         #screen-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(10, 14, 22, 0.94);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            z-index: 200;
-            padding: 20px;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 14, 22, 0.94); display: flex;
+            flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; z-index: 200; padding: 20px;
         }
 
         #screen-overlay h1 {
-            font-size: 2.8rem;
-            color: var(--accent-cyan);
-            margin-bottom: 10px;
-            text-shadow: 0 0 15px var(--accent-cyan);
+            font-size: 2.6rem; color: var(--accent-cyan);
+            margin-bottom: 10px; text-shadow: 0 0 15px var(--accent-cyan);
         }
 
         #screen-overlay p {
-            font-size: 1.15rem;
-            color: var(--text-sub);
-            max-width: 80%;
-            margin-bottom: 25px;
-            line-height: 1.5;
+            font-size: 1.1rem; color: var(--text-sub);
+            max-width: 80%; margin-bottom: 25px; line-height: 1.5;
         }
 
         #start-btn {
-            padding: 12px 35px;
-            font-size: 1.3rem;
-            background: transparent;
-            color: var(--accent-cyan);
-            border: 2px solid var(--accent-cyan);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
+            padding: 12px 35px; font-size: 1.2rem; background: transparent;
+            color: var(--accent-cyan); border: 2px solid var(--accent-cyan);
+            border-radius: 8px; cursor: pointer; transition: all 0.2s;
         }
 
         #start-btn:hover {
-            background: var(--accent-cyan);
-            color: #000;
-            box-shadow: 0 0 15px var(--accent-cyan);
+            background: var(--accent-cyan); color: #000; box-shadow: 0 0 15px var(--accent-cyan);
         }
     </style>
 </head>
@@ -331,7 +228,7 @@
         <div id="top-bar">
             <div class="bar-group">
                 <div>SCORE: <span id="score" class="stat-val">0</span></div>
-                <div>DESTINATION: <span id="stage-num" class="stat-val">1/3</span></div>
+                <div>VISITED: <span id="visited-count" class="stat-val">0/3</span></div>
             </div>
             <div class="bar-group">
                 <button id="hint-btn" class="btn active" onclick="toggleHints()">HINTS: ON</button>
@@ -339,86 +236,101 @@
             </div>
         </div>
 
-        <!-- Top-Down Map Stage View -->
-        <div id="stage-view">
-            <div id="location-header">SHIMONOSEKI EXPLORATION</div>
+        <!-- Overworld Table-Top Map View -->
+        <div id="map-container">
             <div id="map-canvas">
-                <svg id="path-line">
-                    <line id="line-0-1" x1="150" y1="130" x2="450" y2="130" stroke="#2c4a52" stroke-width="4" stroke-dasharray="6,6"/>
-                    <line id="line-1-2" x1="450" y1="130" x2="750" y2="130" stroke="#2c4a52" stroke-width="4" stroke-dasharray="6,6"/>
+                <svg id="path-svg">
+                    <line id="line-west" class="map-line" x1="450" y1="250" x2="160" y2="150" />
+                    <line id="line-north" class="map-line" x1="450" y1="250" x2="450" y2="65" />
+                    <line id="line-east" class="map-line" x1="450" y1="250" x2="740" y2="150" />
                 </svg>
 
-                <!-- Destination Nodes -->
-                <div class="map-node" id="node-0" style="left: 150px; top: 130px;">
-                    <div class="node-icon">🗼</div>
-                    <div class="node-label">Tsunoshima Lighthouse</div>
-                </div>
-                <div class="map-node" id="node-1" style="left: 450px; top: 130px;">
-                    <div class="node-icon">🐟</div>
-                    <div class="node-label">Karato Market</div>
-                </div>
-                <div class="map-node" id="node-2" style="left: 750px; top: 130px;">
+                <!-- Destinations -->
+                <div class="node" id="node-west" style="left: 160px; top: 150px;">
                     <div class="node-icon">🌳</div>
-                    <div class="node-label">Hinoyama Park</div>
+                    <div class="node-label">West: Hinoyama Park</div>
                 </div>
 
-                <!-- Player Avatar Token -->
-                <div id="player-token">🚗</div>
+                <div class="node" id="node-north" style="left: 450px; top: 65px;">
+                    <div class="node-icon">🐟</div>
+                    <div class="node-label">North: Karato Market</div>
+                </div>
+
+                <div class="node" id="node-east" style="left: 740px; top: 150px;">
+                    <div class="node-icon">🗼</div>
+                    <div class="node-label">East: Tsunoshima Lighthouse</div>
+                </div>
+
+                <!-- Directional Choice Overlays (shown at hub) -->
+                <div id="choice-west" class="dir-choice" style="left: 290px; top: 220px;">
+                    <div class="dir-key">にし [n]</div>
+                    <div class="dir-label">← Hinoyama</div>
+                </div>
+                <div id="choice-north" class="dir-choice" style="left: 450px; top: 160px;">
+                    <div class="dir-key">きた [k]</div>
+                    <div class="dir-label">↑ Karato</div>
+                </div>
+                <div id="choice-east" class="dir-choice" style="left: 610px; top: 220px;">
+                    <div class="dir-key">ひがし [h]</div>
+                    <div class="dir-label">→ Tsunoshima</div>
+                </div>
+
+                <!-- Player Character Token -->
+                <div id="player-token" style="left: 450px; top: 250px;">🚶</div>
             </div>
         </div>
 
-        <!-- Gameplay Panel -->
+        <!-- Gameplay Dialogue & Typing Panel -->
         <div id="interactive-panel">
             <div id="dialogue-speaker"></div>
-            <div id="mode-instruction">Type the Hiragana to drive to your destination!</div>
+            <div id="mode-instruction">Choose a direction to travel!</div>
             <div id="sentence-container"></div>
             <div id="english-translation"></div>
         </div>
 
-        <!-- Modal Overlay -->
+        <!-- Screen Overlay Modal -->
         <div id="screen-overlay">
-            <h1 id="overlay-title">SHIMONOSEKI JOURNEY</h1>
-            <p id="overlay-desc">Explore Shimonoseki from a top-down view! Type Hiragana steps to drive to iconic locations, then engage in immersive roleplay conversations with locals using Kanji & Furigana.</p>
+            <h1 id="overlay-title">SHIMONOSEKI EXPLORER</h1>
+            <p id="overlay-desc">Explore Shimonoseki from a table-top view! Type directional Hiragana to travel to Karato Market, Hinoyama Park, or Tsunoshima Lighthouse, then practice authentic Japanese conversations!</p>
             <button id="start-btn" onclick="handleOverlayClick()">START ADVENTURE</button>
         </div>
     </div>
 
     <script>
-        // JIS Keyboard Mapping
+        // Expanded JIS Mapping for Base, Dakuten, Handakuten & Small Kana
         const jisMap = {
+            // Base Vowels & Consonants
             'q': 'た', 'w': 'て', 'e': 'い', 'r': 'す', 't': 'か', 'y': 'ん', 'u': 'な', 'i': 'に', 'o': 'ら', 'p': 'せ',
             'a': 'ち', 's': 'と', 'd': 'し', 'f': 'は', 'g': 'き', 'h': 'く', 'j': 'ま', 'k': 'の', 'l': 'り',
             'z': 'つ', 'x': 'さ', 'c': 'そ', 'v': 'ひ', 'b': 'こ', 'n': 'み', 'm': 'も',
-            '1': 'ぬ', '2': 'ふ', '3': 'あ', '4': 'う', '5': 'え', '6': 'お', '7': 'や', '8': 'ゆ', '9': 'よ', '0': 'わ'
+            '1': 'ぬ', '2': 'ふ', '3': 'あ', '4': 'う', '5': 'え', '6': 'お', '7': 'や', '8': 'ゆ', '9': 'よ', '0': 'わ',
+            
+            // Small Kana & Special Inputs (capitalized/shifted)
+            'Z': 'っ', 'X': 'ぁ', 'C': 'ぃ', 'V': 'ぅ', 'B': 'ぇ', 'N': 'ぉ',
+            'Y': 'ゃ', 'U': 'ゅ', 'I': 'ょ',
+
+            // Dakuten (゛) Mappings
+            'ga': 'が', 'gi': 'ぎ', 'gu': 'ぐ', 'ge': 'げ', 'go': 'ご',
+            'za': 'ざ', 'ji': 'じ', 'zu': 'ず', 'ze': 'ぜ', 'zo': 'ぞ',
+            'da': 'だ', 'di': 'ぢ', 'du': 'づ', 'de': 'で', 'do': 'ど',
+            'ba': 'ば', 'bi': 'び', 'bu': 'ぶ', 'be': 'べ', 'bo': 'ぼ',
+
+            // Handakuten (゜) Mappings
+            'pa': 'ぱ', 'pi': 'ぴ', 'pu': 'ぷ', 'pe': 'ぺ', 'po': 'ぽ'
         };
 
-        const walkingKanaPool = ['あ','い','う','え','お','か','き','く','け','こ','さ','し','す','せ','そ','た','ち','つ','て','と','ん'];
+        // Standard walking steps pool
+        const travelKanaPool = ['あ','い','う','え','お','か','き','く','け','こ','さ','し','す','せ','そ','た','ち','つ','て','と','ん','な','に','ぬ','ね','の'];
 
-        // Shimonoseki Destinations & Unique Roleplay Scenarios
-        const destinations = [
-            {
-                name: "Tsunoshima Lighthouse",
-                coords: { left: 150, top: 130 },
-                walkSteps: 3,
-                speaker: "Tour Guide",
-                scenarios: [
-                    {
-                        intro: "Welcome to the stunning white lighthouse overlooking the blue sea!",
-                        en: '"What a wonderful ocean view!"',
-                        tokens: [
-                            { kanji: "素晴", furigana: ["す", "ば", "ら"] },
-                            { kanji: "らしい", furigana: ["し", "い"] },
-                            { kanji: "景色", furigana: ["け", "し", "き"] },
-                            { kanji: "ですね", furigana: ["で", "す", "ね"] }
-                        ]
-                    }
-                ]
-            },
-            {
+        // Table-Top Destination Map Configuration
+        const destinations = {
+            north: {
+                id: 'north',
                 name: "Karato Market",
-                coords: { left: 450, top: 130 },
-                walkSteps: 4,
+                coords: { x: 450, y: 65 },
+                startKey: 'k', startKana: 'き',
                 speaker: "Market Employee",
+                visited: false,
                 scenarios: [
                     {
                         intro: "Welcome to Karato Market! Fresh seafood caught this morning!",
@@ -431,8 +343,7 @@
                         intro: "Customer: Pointing at the famous local pufferfish (Fugu) sushi...",
                         en: '"I want to buy this Fugu sushi, please."',
                         tokens: [
-                            { kanji: "不", furigana: ["ふ"] },
-                            { kanji: "遇", furigana: ["ぐ"] },
+                            { kanji: "ふぐ", furigana: ["ふ", "ぐ"] },
                             { kanji: "の", furigana: ["の"] },
                             { kanji: "寿司", furigana: ["す", "し"] },
                             { kanji: "を", furigana: ["を"] },
@@ -441,8 +352,8 @@
                         ]
                     },
                     {
-                        intro: "Employee: That will be 1,000 yen. Here is your total.",
-                        en: '"Thank you! Here is your change."',
+                        intro: "Employee: Here is your total.",
+                        en: '"Thank you very much!"',
                         tokens: [
                             { kanji: "有", furigana: ["あ"] },
                             { kanji: "難", furigana: ["り"] },
@@ -453,11 +364,13 @@
                     }
                 ]
             },
-            {
+            west: {
+                id: 'west',
                 name: "Hinoyama Park",
-                coords: { left: 750, top: 130 },
-                walkSteps: 4,
+                coords: { x: 160, y: 150 },
+                startKey: 'n', startKana: 'に',
                 speaker: "Park Visitor",
+                visited: false,
                 scenarios: [
                     {
                         intro: "At the summit of Hinoyama Park, overlooking the Kanmon Straits.",
@@ -469,29 +382,53 @@
                             { kanji: "が", furigana: ["が"] },
                             { kanji: "気持", furigana: ["き", "も"] },
                             { kanji: "ち", furigana: ["ち"] },
-                            { kanji: "良い", furigana: ["よ", "い"] }
+                            { kanji: "良", furigana: ["よ"] },
+                            { kanji: "い", furigana: ["い"] }
+                        ]
+                    }
+                ]
+            },
+            east: {
+                id: 'east',
+                name: "Tsunoshima Lighthouse",
+                coords: { x: 740, y: 150 },
+                startKey: 'h', startKana: 'ひ',
+                speaker: "Tour Guide",
+                visited: false,
+                scenarios: [
+                    {
+                        intro: "Welcome to the stunning white lighthouse overlooking the clear sea!",
+                        en: '"What a wonderful ocean view!"',
+                        tokens: [
+                            { kanji: "素晴", furigana: ["す", "ば", "ら"] },
+                            { kanji: "らしい", furigana: ["し", "い"] },
+                            { kanji: "景色", furigana: ["け", "し", "き"] },
+                            { kanji: "ですね", furigana: ["で", "す", "ね"] }
                         ]
                     }
                 ]
             }
-        ];
+        };
+
+        const hubCoord = { x: 450, y: 250 };
 
         // Game State Variables
-        let currentDestIdx = 0;
-        let currentMode = 'DRIVE'; // 'DRIVE' or 'ROLEPLAY'
-        let driveProgress = 0;
+        let currentMode = 'HUB'; // 'HUB', 'TRAVEL', or 'ROLEPLAY'
+        let selectedDestKey = null;
+        let travelSteps = 0;
+        let maxTravelSteps = 4;
         let currentScenarioIdx = 0;
         let targetKanaList = [];
         let currentTargetIdx = 0;
+        let visitedSet = new Set();
         let score = 0;
         let isPaused = false;
         let gameStarted = false;
         let showHints = true;
 
-        // Elements
+        // UI Elements
         const scoreEl = document.getElementById('score');
-        const stageNumEl = document.getElementById('stage-num');
-        const locationHeaderEl = document.getElementById('location-header');
+        const visitedCountEl = document.getElementById('visited-count');
         const playerTokenEl = document.getElementById('player-token');
         const dialogueSpeakerEl = document.getElementById('dialogue-speaker');
         const modeInstructionEl = document.getElementById('mode-instruction');
@@ -506,102 +443,96 @@
 
         function initGame() {
             score = 0;
-            currentDestIdx = 0;
+            visitedSet.clear();
+            Object.keys(destinations).forEach(k => destinations[k].visited = false);
             gameStarted = true;
             isPaused = false;
             scoreEl.innerText = score;
+            visitedCountEl.innerText = `0/3`;
             overlayEl.style.display = 'none';
-            loadDestination(currentDestIdx);
+            returnToHub();
         }
 
-        function loadDestination(idx) {
-            if (idx >= destinations.length) {
-                overlayTitleEl.innerText = "JOURNEY COMPLETE!";
-                overlayDescEl.innerText = `You explored all of Shimonoseki, visited Tsunoshima Lighthouse, Karato Market, and Hinoyama Park! Final Score: ${score}`;
+        function returnToHub() {
+            if (visitedSet.size >= 3) {
+                // Victory Condition!
+                overlayTitleEl.innerText = "SHIMONOSEKI TOUR COMPLETE!";
+                overlayDescEl.innerText = `Congratulations! You visited Karato Market, Hinoyama Park, and Tsunoshima Lighthouse! Final Score: ${score}`;
                 startBtn.innerText = "PLAY AGAIN";
                 overlayEl.style.display = 'flex';
                 gameStarted = false;
                 return;
             }
 
-            const dest = destinations[idx];
-            stageNumEl.innerText = `${idx + 1}/${destinations.length}`;
-            locationHeaderEl.innerText = `DESTINATION: ${dest.name.toUpperCase()}`;
-            
-            // Highlight active node on map
-            document.querySelectorAll('.map-node').forEach((node, i) => {
-                if (i === idx) node.classList.add('active-dest');
-                else node.classList.remove('active-dest');
-            });
+            currentMode = 'HUB';
+            selectedDestKey = null;
+            playerTokenEl.style.left = `${hubCoord.x}px`;
+            playerTokenEl.style.top = `${hubCoord.y}px`;
 
-            driveProgress = 0;
-            currentScenarioIdx = 0;
-            updatePlayerPosition();
-            startDriveMode();
-        }
-
-        function updatePlayerPosition() {
-            const dest = destinations[currentDestIdx];
-            // Compute interpolated position between nodes
-            const prevX = currentDestIdx === 0 ? 150 : destinations[currentDestIdx - 1].coords.left;
-            const targetX = dest.coords.left;
-            const quest = destinations[currentDestIdx];
-            
-            const ratio = driveProgress / quest.walkSteps;
-            const currentX = prevX + (targetX - prevX) * ratio;
-
-            playerTokenEl.style.left = `${currentX}px`;
-            playerTokenEl.style.top = `${dest.coords.top}px`;
-        }
-
-        function startDriveMode() {
-            currentMode = 'DRIVE';
             dialogueSpeakerEl.innerText = "";
-            modeInstructionEl.innerText = `Driving to ${destinations[currentDestIdx].name}. Type the Hiragana step to drive forward!`;
+            modeInstructionEl.innerText = "Type 'k' (Karato), 'n' (Hinoyama), or 'h' (Tsunoshima) to choose your direction!";
             englishTranslationEl.innerText = "";
-            spawnDriveStep();
+
+            // Toggle Direction overlays based on remaining unvisited nodes
+            document.getElementById('choice-north').style.display = destinations.north.visited ? 'none' : 'flex';
+            document.getElementById('choice-west').style.display = destinations.west.visited ? 'none' : 'flex';
+            document.getElementById('choice-east').style.display = destinations.east.visited ? 'none' : 'flex';
+
+            sentenceContainerEl.innerHTML = '';
         }
 
-        function spawnDriveStep() {
-            const randKana = walkingKanaPool[Math.floor(Math.random() * walkingKanaPool.length)];
+        function chooseDestination(dirKey) {
+            const dest = destinations[dirKey];
+            if (!dest || dest.visited) return;
+
+            selectedDestKey = dirKey;
+            currentMode = 'TRAVEL';
+            travelSteps = 0;
+
+            // Hide choice overlays
+            document.getElementById('choice-north').style.display = 'none';
+            document.getElementById('choice-west').style.display = 'none';
+            document.getElementById('choice-east').style.display = 'none';
+
+            modeInstructionEl.innerText = `Traveling toward ${dest.name}... Type the Hiragana steps!`;
+            spawnTravelStep();
+        }
+
+        function spawnTravelStep() {
+            const randKana = travelKanaPool[Math.floor(Math.random() * travelKanaPool.length)];
             targetKanaList = [randKana];
             currentTargetIdx = 0;
             renderSingleKanaDisplay(randKana);
         }
 
-        function renderSingleKanaDisplay(kana) {
-            sentenceContainerEl.innerHTML = '';
-            const key = getMatchingKey(kana);
+        function updatePlayerPosition() {
+            const dest = destinations[selectedDestKey];
+            const ratio = travelSteps / maxTravelSteps;
+            const curX = hubCoord.x + (dest.coords.x - hubCoord.x) * ratio;
+            const curY = hubCoord.y + (dest.coords.y - hubCoord.y) * ratio;
 
-            const wrap = document.createElement('div');
-            wrap.className = 'char-unit active';
-            
-            const kanaSpan = document.createElement('span');
-            kanaSpan.innerText = kana;
-            kanaSpan.style.fontSize = '3rem';
-
-            const hintSpan = document.createElement('span');
-            hintSpan.className = 'key-hint';
-            hintSpan.innerText = `[${key}]`;
-
-            wrap.appendChild(kanaSpan);
-            wrap.appendChild(hintSpan);
-            sentenceContainerEl.appendChild(wrap);
+            playerTokenEl.style.left = `${curX}px`;
+            playerTokenEl.style.top = `${curY}px`;
         }
 
         function startRoleplayMode() {
             currentMode = 'ROLEPLAY';
+            currentScenarioIdx = 0;
+            const dest = destinations[selectedDestKey];
+            
+            // Mark destination node UI as active target
+            document.getElementById(`node-${dest.id}`).classList.add('target');
             loadRoleplayScenario(currentScenarioIdx);
         }
 
         function loadRoleplayScenario(sIdx) {
-            const dest = destinations[currentDestIdx];
+            const dest = destinations[selectedDestKey];
             const scenario = dest.scenarios[sIdx];
 
             dialogueSpeakerEl.innerText = `${dest.speaker}: "${scenario.intro}"`;
-            modeInstructionEl.innerText = "Roleplay conversation: Type the Furigana above the Kanji!";
+            modeInstructionEl.innerText = "Type the Furigana above the Kanji to continue the dialogue!";
             englishTranslationEl.innerText = scenario.en;
-            
+
             sentenceContainerEl.innerHTML = '';
             targetKanaList = [];
             currentTargetIdx = 0;
@@ -612,12 +543,12 @@
                 const ruby = document.createElement('ruby');
                 const rb = document.createElement('rb');
                 rb.innerText = token.kanji;
-                
+
                 const rt = document.createElement('rt');
 
                 token.furigana.forEach(fKana => {
                     targetKanaList.push(fKana);
-                    const key = getMatchingKey(fKana);
+                    const keyHint = getMatchingKeyHint(fKana);
 
                     const charSpan = document.createElement('span');
                     charSpan.className = 'char-unit';
@@ -627,7 +558,7 @@
                     const textNode = document.createTextNode(fKana);
                     const hintSpan = document.createElement('span');
                     hintSpan.className = 'key-hint';
-                    hintSpan.innerText = `[${key}]`;
+                    hintSpan.innerText = `[${keyHint}]`;
 
                     charSpan.appendChild(textNode);
                     charSpan.appendChild(hintSpan);
@@ -642,9 +573,10 @@
             });
         }
 
-        function getMatchingKey(kana) {
-            const key = Object.keys(jisMap).find(k => jisMap[k] === kana);
-            return key ? key.toUpperCase() : '?';
+        function getMatchingKeyHint(kana) {
+            const foundKey = Object.keys(jisMap).find(k => jisMap[k] === kana);
+            if (foundKey) return foundKey.toUpperCase();
+            return '?';
         }
 
         // Key Input Event Handler
@@ -656,8 +588,19 @@
 
             if (!gameStarted || isPaused) return;
 
-            const key = e.key.toLowerCase();
-            const typedKana = jisMap[key];
+            const key = e.key;
+            const lowerKey = key.toLowerCase();
+
+            // 1. HUB DIRECTION SELECTION MODE
+            if (currentMode === 'HUB') {
+                if (lowerKey === 'k' && !destinations.north.visited) chooseDestination('north');
+                else if (lowerKey === 'n' && !destinations.west.visited) chooseDestination('west');
+                else if (lowerKey === 'h' && !destinations.east.visited) chooseDestination('east');
+                return;
+            }
+
+            // Map input key to Hiragana
+            let typedKana = jisMap[key] || jisMap[lowerKey];
             if (!typedKana) return;
 
             const expectedKana = targetKanaList[currentTargetIdx];
@@ -666,17 +609,19 @@
                 score += 25;
                 scoreEl.innerText = score;
 
-                if (currentMode === 'DRIVE') {
-                    driveProgress++;
+                // 2. TRAVEL MODE
+                if (currentMode === 'TRAVEL') {
+                    travelSteps++;
                     updatePlayerPosition();
-                    
-                    const dest = destinations[currentDestIdx];
-                    if (driveProgress >= dest.walkSteps) {
+
+                    if (travelSteps >= maxTravelSteps) {
                         startRoleplayMode();
                     } else {
-                        spawnDriveStep();
+                        spawnTravelStep();
                     }
-                } else if (currentMode === 'ROLEPLAY') {
+                } 
+                // 3. ROLEPLAY SCENARIO MODE
+                else if (currentMode === 'ROLEPLAY') {
                     const activeEl = sentenceContainerEl.querySelector(`.char-unit[data-index="${currentTargetIdx}"]`);
                     if (activeEl) {
                         activeEl.classList.remove('active');
@@ -689,11 +634,18 @@
                         score += 150;
                         scoreEl.innerText = score;
                         currentScenarioIdx++;
-                        
-                        const dest = destinations[currentDestIdx];
+
+                        const dest = destinations[selectedDestKey];
                         if (currentScenarioIdx >= dest.scenarios.length) {
-                            currentDestIdx++;
-                            setTimeout(() => loadDestination(currentDestIdx), 800);
+                            // Destination completed!
+                            dest.visited = true;
+                            visitedSet.add(selectedDestKey);
+                            visitedCountEl.innerText = `${visitedSet.size}/3`;
+                            
+                            document.getElementById(`node-${dest.id}`).classList.remove('target');
+                            document.getElementById(`node-${dest.id}`).classList.add('completed');
+
+                            setTimeout(() => returnToHub(), 1000);
                         } else {
                             setTimeout(() => loadRoleplayScenario(currentScenarioIdx), 800);
                         }
@@ -705,16 +657,36 @@
             }
         });
 
+        function renderSingleKanaDisplay(kana) {
+            sentenceContainerEl.innerHTML = '';
+            const keyHint = getMatchingKeyHint(kana);
+
+            const wrap = document.createElement('div');
+            wrap.className = 'char-unit active';
+
+            const kanaSpan = document.createElement('span');
+            kanaSpan.innerText = kana;
+            kanaSpan.style.fontSize = '3rem';
+
+            const hintSpan = document.createElement('span');
+            hintSpan.className = 'key-hint';
+            hintSpan.innerText = `[${keyHint}]`;
+
+            wrap.appendChild(kanaSpan);
+            wrap.appendChild(hintSpan);
+            sentenceContainerEl.appendChild(wrap);
+        }
+
         function togglePause() {
             if (!gameStarted) return;
             isPaused = !isPaused;
 
             if (isPaused) {
                 overlayTitleEl.innerText = "GAME PAUSED";
-                overlayDescEl.innerText = "Press [ESC] or click below to resume your Shimonoseki trip.";
+                overlayDescEl.innerText = "Press [ESC] or click below to resume your Shimonoseki adventure.";
                 startBtn.innerText = "RESUME GAME";
                 overlayEl.style.display = 'flex';
-                pauseBtn.innerText = "PAUSE [ESC]";
+                pauseBtn.innerText = "RESUME [ESC]";
             } else {
                 overlayEl.style.display = 'none';
                 pauseBtn.innerText = "PAUSE [ESC]";
