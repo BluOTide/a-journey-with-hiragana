@@ -81,13 +81,7 @@
             pointer-events: none;
         }
 
-        .map-line {
-            stroke: #2a415e; stroke-width: 4; stroke-dasharray: 6,6;
-        }
-
-        .map-line.active-path {
-            stroke: var(--accent-cyan); stroke-dasharray: none;
-        }
+        .map-line { stroke: #2a415e; stroke-width: 4; stroke-dasharray: 6,6; }
 
         /* Map Destinations */
         .node {
@@ -96,9 +90,7 @@
             z-index: 5; transition: transform 0.2s;
         }
 
-        .node-icon {
-            font-size: 2.2rem; filter: drop-shadow(0 0 6px rgba(0,0,0,0.8));
-        }
+        .node-icon { font-size: 2.2rem; filter: drop-shadow(0 0 6px rgba(0,0,0,0.8)); }
 
         .node-label {
             font-size: 0.75rem; background: rgba(0,0,0,0.85);
@@ -117,7 +109,7 @@
             z-index: 20; filter: drop-shadow(0 0 10px var(--accent-cyan));
         }
 
-        /* Directional Choice Indicators (Hub Mode) */
+        /* Directional Choice Overlays (Hub Mode) */
         .dir-choice {
             position: absolute; transform: translate(-50%, -50%);
             background: rgba(0, 0, 0, 0.9); border: 2px solid var(--accent-gold);
@@ -136,14 +128,8 @@
             background: rgba(0, 0, 0, 0.25); text-align: center;
         }
 
-        #dialogue-speaker {
-            font-size: 0.95rem; color: var(--accent-cyan);
-            margin-bottom: 4px; font-weight: bold;
-        }
-
-        #mode-instruction {
-            font-size: 1rem; color: var(--text-sub); margin-bottom: 10px;
-        }
+        #dialogue-speaker { font-size: 0.95rem; color: var(--accent-cyan); margin-bottom: 4px; font-weight: bold; }
+        #mode-instruction { font-size: 1rem; color: var(--text-sub); margin-bottom: 10px; }
 
         /* Sentence Display & Furigana */
         #sentence-container {
@@ -188,9 +174,7 @@
 
         .show-hints .key-hint { display: inline-block; }
 
-        #english-translation {
-            font-size: 1.1rem; color: var(--accent-cyan); font-style: italic;
-        }
+        #english-translation { font-size: 1.1rem; color: var(--accent-cyan); font-style: italic; }
 
         /* Screen Overlay */
         #screen-overlay {
@@ -297,29 +281,98 @@
     </div>
 
     <script>
-        // Expanded JIS Mapping for Base, Dakuten, Handakuten & Small Kana
-        const jisMap = {
-            // Base Vowels & Consonants
-            'q': 'た', 'w': 'て', 'e': 'い', 'r': 'す', 't': 'か', 'y': 'ん', 'u': 'な', 'i': 'に', 'o': 'ら', 'p': 'せ',
-            'a': 'ち', 's': 'と', 'd': 'し', 'f': 'は', 'g': 'き', 'h': 'く', 'j': 'ま', 'k': 'の', 'l': 'り',
-            'z': 'つ', 'x': 'さ', 'c': 'そ', 'v': 'ひ', 'b': 'こ', 'n': 'み', 'm': 'も',
-            '1': 'ぬ', '2': 'ふ', '3': 'あ', '4': 'う', '5': 'え', '6': 'お', '7': 'や', '8': 'ゆ', '9': 'よ', '0': 'わ',
-            
-            // Small Kana & Special Inputs (capitalized/shifted)
-            'Z': 'っ', 'X': 'ぁ', 'C': 'ぃ', 'V': 'ぅ', 'B': 'ぇ', 'N': 'ぉ',
-            'Y': 'ゃ', 'U': 'ゅ', 'I': 'ょ',
+        // Complete JIS Layout Mapping Table: Hiragana -> Key Inputs Sequence
+        // Format: { kana: 'あ', keys: ['3'], hint: '3' }
+        const kanaJisData = {
+            // Base Hiragana
+            'あ': { keys: ['3'], hint: '3' },
+            'い': { keys: ['e'], hint: 'E' },
+            'う': { keys: ['4'], hint: '4' },
+            'え': { keys: ['5'], hint: '5' },
+            'お': { keys: ['6'], hint: '6' },
+            'か': { keys: ['t'], hint: 'T' },
+            'き': { keys: ['g'], hint: 'G' },
+            'く': { keys: ['h'], hint: 'H' },
+            'け': { keys: [':'], hint: ':' },
+            'こ': { keys: ['b'], hint: 'B' },
+            'さ': { keys: ['x'], hint: 'X' },
+            'し': { keys: ['d'], hint: 'D' },
+            'す': { keys: ['r'], hint: 'R' },
+            'せ': { keys: ['p'], hint: 'P' },
+            'そ': { keys: ['c'], hint: 'C' },
+            'た': { keys: ['q'], hint: 'Q' },
+            'ち': { keys: ['a'], hint: 'A' },
+            'つ': { keys: ['z'], hint: 'Z' },
+            'て': { keys: ['w'], hint: 'W' },
+            'と': { keys: ['s'], hint: 'S' },
+            'な': { keys: ['u'], hint: 'U' },
+            'に': { keys: ['i'], hint: 'I' },
+            'ぬ': { keys: ['1'], hint: '1' },
+            'ね': { keys: [','], hint: ',' },
+            'の': { keys: ['k'], hint: 'K' },
+            'は': { keys: ['f'], hint: 'F' },
+            'ひ': { keys: ['v'], hint: 'V' },
+            'ふ': { keys: ['2'], hint: '2' },
+            'へ': { keys: ['^'], hint: '^' },
+            'ほ': { keys: ['-'], hint: '-' },
+            'ま': { keys: ['j'], hint: 'J' },
+            'み': { keys: ['n'], hint: 'N' },
+            'む': { keys: [']'], hint: ']' },
+            'め': { keys: ['/'], hint: '/' },
+            'も': { keys: ['m'], hint: 'M' },
+            'や': { keys: ['7'], hint: '7' },
+            'ゆ': { keys: ['8'], hint: '8' },
+            'よ': { keys: ['9'], hint: '9' },
+            'ら': { keys: ['o'], hint: 'O' },
+            'り': { keys: ['l'], hint: 'L' },
+            'る': { keys: ['.'], hint: '.' },
+            'れ': { keys: [';'], hint: ';' },
+            'ろ': { keys: ['\\'], hint: '\\' },
+            'わ': { keys: ['0'], hint: '0' },
+            'を': { keys: ['Shift+0'], hint: 'Shift+0' },
+            'ん': { keys: ['y'], hint: 'Y' },
 
-            // Dakuten (゛) Mappings
-            'ga': 'が', 'gi': 'ぎ', 'gu': 'ぐ', 'ge': 'げ', 'go': 'ご',
-            'za': 'ざ', 'ji': 'じ', 'zu': 'ず', 'ze': 'ぜ', 'zo': 'ぞ',
-            'da': 'だ', 'di': 'ぢ', 'du': 'づ', 'de': 'で', 'do': 'ど',
-            'ba': 'ば', 'bi': 'び', 'bu': 'ぶ', 'be': 'べ', 'bo': 'ぼ',
+            // Small Kana (Kogana)
+            'ぁ': { keys: ['Shift+3'], hint: 'Shift+3' },
+            'ぃ': { keys: ['Shift+e'], hint: 'Shift+E' },
+            'ぅ': { keys: ['Shift+4'], hint: 'Shift+4' },
+            'ぇ': { keys: ['Shift+5'], hint: 'Shift+5' },
+            'ぉ': { keys: ['Shift+6'], hint: 'Shift+6' },
+            'っ': { keys: ['Shift+z'], hint: 'Shift+Z' },
+            'ゃ': { keys: ['Shift+7'], hint: 'Shift+7' },
+            'ゅ': { keys: ['Shift+8'], hint: 'Shift+8' },
+            'ょ': { keys: ['Shift+9'], hint: 'Shift+9' },
 
-            // Handakuten (゜) Mappings
-            'pa': 'ぱ', 'pi': 'ぴ', 'pu': 'ぷ', 'pe': 'ぺ', 'po': 'ぽ'
+            // Dakuten Characters (Base Key + '@')
+            'が': { keys: ['t', '@'], hint: 'T → @' },
+            'ぎ': { keys: ['g', '@'], hint: 'G → @' },
+            'ぐ': { keys: ['h', '@'], hint: 'H → @' },
+            'げ': { keys: [':', '@'], hint: ': → @' },
+            'ご': { keys: ['b', '@'], hint: 'B → @' },
+            'ざ': { keys: ['x', '@'], hint: 'X → @' },
+            'じ': { keys: ['d', '@'], hint: 'D → @' },
+            'ず': { keys: ['r', '@'], hint: 'R → @' },
+            'ぜ': { keys: ['p', '@'], hint: 'P → @' },
+            'ぞ': { keys: ['c', '@'], hint: 'C → @' },
+            'だ': { keys: ['q', '@'], hint: 'Q → @' },
+            'ぢ': { keys: ['a', '@'], hint: 'A → @' },
+            'づ': { keys: ['z', '@'], hint: 'Z → @' },
+            'で': { keys: ['w', '@'], hint: 'W → @' },
+            'ど': { keys: ['s', '@'], hint: 'S → @' },
+            'ば': { keys: ['f', '@'], hint: 'F → @' },
+            'び': { keys: ['v', '@'], hint: 'V → @' },
+            'ぶ': { keys: ['2', '@'], hint: '2 → @' },
+            'べ': { keys: ['^', '@'], hint: '^ → @' },
+            'ぼ': { keys: ['-', '@'], hint: '- → @' },
+
+            // Handakuten Characters (Base Key + '[')
+            'ぱ': { keys: ['f', '['], hint: 'F → [' },
+            'ぴ': { keys: ['v', '['], hint: 'V → [' },
+            'ぷ': { keys: ['2', '['], hint: '2 → [' },
+            'ぺ': { keys: ['^', '['], hint: '^ → [' },
+            'ぽ': { keys: ['-', '['], hint: '- → [' }
         };
 
-        // Standard walking steps pool
         const travelKanaPool = ['あ','い','う','え','お','か','き','く','け','こ','さ','し','す','せ','そ','た','ち','つ','て','と','ん','な','に','ぬ','ね','の'];
 
         // Table-Top Destination Map Configuration
@@ -328,7 +381,7 @@
                 id: 'north',
                 name: "Karato Market",
                 coords: { x: 450, y: 65 },
-                startKey: 'k', startKana: 'き',
+                startKey: 'k',
                 speaker: "Market Employee",
                 visited: false,
                 scenarios: [
@@ -368,7 +421,7 @@
                 id: 'west',
                 name: "Hinoyama Park",
                 coords: { x: 160, y: 150 },
-                startKey: 'n', startKana: 'に',
+                startKey: 'n',
                 speaker: "Park Visitor",
                 visited: false,
                 scenarios: [
@@ -392,7 +445,7 @@
                 id: 'east',
                 name: "Tsunoshima Lighthouse",
                 coords: { x: 740, y: 150 },
-                startKey: 'h', startKana: 'ひ',
+                startKey: 'h',
                 speaker: "Tour Guide",
                 visited: false,
                 scenarios: [
@@ -420,6 +473,7 @@
         let currentScenarioIdx = 0;
         let targetKanaList = [];
         let currentTargetIdx = 0;
+        let subKeyStep = 0; // Tracks multi-keystroke input (e.g. dakuten/handakuten)
         let visitedSet = new Set();
         let score = 0;
         let isPaused = false;
@@ -455,7 +509,6 @@
 
         function returnToHub() {
             if (visitedSet.size >= 3) {
-                // Victory Condition!
                 overlayTitleEl.innerText = "SHIMONOSEKI TOUR COMPLETE!";
                 overlayDescEl.innerText = `Congratulations! You visited Karato Market, Hinoyama Park, and Tsunoshima Lighthouse! Final Score: ${score}`;
                 startBtn.innerText = "PLAY AGAIN";
@@ -473,7 +526,6 @@
             modeInstructionEl.innerText = "Type 'k' (Karato), 'n' (Hinoyama), or 'h' (Tsunoshima) to choose your direction!";
             englishTranslationEl.innerText = "";
 
-            // Toggle Direction overlays based on remaining unvisited nodes
             document.getElementById('choice-north').style.display = destinations.north.visited ? 'none' : 'flex';
             document.getElementById('choice-west').style.display = destinations.west.visited ? 'none' : 'flex';
             document.getElementById('choice-east').style.display = destinations.east.visited ? 'none' : 'flex';
@@ -489,7 +541,6 @@
             currentMode = 'TRAVEL';
             travelSteps = 0;
 
-            // Hide choice overlays
             document.getElementById('choice-north').style.display = 'none';
             document.getElementById('choice-west').style.display = 'none';
             document.getElementById('choice-east').style.display = 'none';
@@ -502,6 +553,7 @@
             const randKana = travelKanaPool[Math.floor(Math.random() * travelKanaPool.length)];
             targetKanaList = [randKana];
             currentTargetIdx = 0;
+            subKeyStep = 0;
             renderSingleKanaDisplay(randKana);
         }
 
@@ -520,7 +572,6 @@
             currentScenarioIdx = 0;
             const dest = destinations[selectedDestKey];
             
-            // Mark destination node UI as active target
             document.getElementById(`node-${dest.id}`).classList.add('target');
             loadRoleplayScenario(currentScenarioIdx);
         }
@@ -536,6 +587,7 @@
             sentenceContainerEl.innerHTML = '';
             targetKanaList = [];
             currentTargetIdx = 0;
+            subKeyStep = 0;
 
             let globalKanaIdx = 0;
 
@@ -548,7 +600,7 @@
 
                 token.furigana.forEach(fKana => {
                     targetKanaList.push(fKana);
-                    const keyHint = getMatchingKeyHint(fKana);
+                    const jisInfo = kanaJisData[fKana] || { hint: '?' };
 
                     const charSpan = document.createElement('span');
                     charSpan.className = 'char-unit';
@@ -558,7 +610,7 @@
                     const textNode = document.createTextNode(fKana);
                     const hintSpan = document.createElement('span');
                     hintSpan.className = 'key-hint';
-                    hintSpan.innerText = `[${keyHint}]`;
+                    hintSpan.innerText = `[${jisInfo.hint}]`;
 
                     charSpan.appendChild(textNode);
                     charSpan.appendChild(hintSpan);
@@ -573,13 +625,7 @@
             });
         }
 
-        function getMatchingKeyHint(kana) {
-            const foundKey = Object.keys(jisMap).find(k => jisMap[k] === kana);
-            if (foundKey) return foundKey.toUpperCase();
-            return '?';
-        }
-
-        // Key Input Event Handler
+        // Keyboard Event Processing
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && gameStarted) {
                 togglePause();
@@ -588,10 +634,9 @@
 
             if (!gameStarted || isPaused) return;
 
-            const key = e.key;
-            const lowerKey = key.toLowerCase();
+            const lowerKey = e.key.toLowerCase();
 
-            // 1. HUB DIRECTION SELECTION MODE
+            // HUB NAVIGATION MODE
             if (currentMode === 'HUB') {
                 if (lowerKey === 'k' && !destinations.north.visited) chooseDestination('north');
                 else if (lowerKey === 'n' && !destinations.west.visited) chooseDestination('west');
@@ -599,67 +644,80 @@
                 return;
             }
 
-            // Map input key to Hiragana
-            let typedKana = jisMap[key] || jisMap[lowerKey];
-            if (!typedKana) return;
+            // Construct keystroke string (e.g. '3', 't', 'Shift+3', '@', '[')
+            let pressedKeyStr = e.key;
+            if (e.shiftKey && e.key.length === 1) {
+                pressedKeyStr = `Shift+${e.key.toLowerCase()}`;
+            }
 
             const expectedKana = targetKanaList[currentTargetIdx];
+            const kanaData = kanaJisData[expectedKana];
 
-            if (typedKana === expectedKana) {
-                score += 25;
-                scoreEl.innerText = score;
+            if (!kanaData) return;
 
-                // 2. TRAVEL MODE
-                if (currentMode === 'TRAVEL') {
-                    travelSteps++;
-                    updatePlayerPosition();
+            // Check if input matches the required step in key sequence
+            const requiredKey = kanaData.keys[subKeyStep];
 
-                    if (travelSteps >= maxTravelSteps) {
-                        startRoleplayMode();
-                    } else {
-                        spawnTravelStep();
-                    }
-                } 
-                // 3. ROLEPLAY SCENARIO MODE
-                else if (currentMode === 'ROLEPLAY') {
-                    const activeEl = sentenceContainerEl.querySelector(`.char-unit[data-index="${currentTargetIdx}"]`);
-                    if (activeEl) {
-                        activeEl.classList.remove('active');
-                        activeEl.classList.add('completed');
-                    }
+            if (pressedKeyStr === requiredKey || pressedKeyStr.toLowerCase() === requiredKey) {
+                subKeyStep++;
 
-                    currentTargetIdx++;
+                // If sequence is fully matched
+                if (subKeyStep >= kanaData.keys.length) {
+                    subKeyStep = 0;
+                    score += 25;
+                    scoreEl.innerText = score;
 
-                    if (currentTargetIdx >= targetKanaList.length) {
-                        score += 150;
-                        scoreEl.innerText = score;
-                        currentScenarioIdx++;
+                    if (currentMode === 'TRAVEL') {
+                        travelSteps++;
+                        updatePlayerPosition();
 
-                        const dest = destinations[selectedDestKey];
-                        if (currentScenarioIdx >= dest.scenarios.length) {
-                            // Destination completed!
-                            dest.visited = true;
-                            visitedSet.add(selectedDestKey);
-                            visitedCountEl.innerText = `${visitedSet.size}/3`;
-                            
-                            document.getElementById(`node-${dest.id}`).classList.remove('target');
-                            document.getElementById(`node-${dest.id}`).classList.add('completed');
-
-                            setTimeout(() => returnToHub(), 1000);
+                        if (travelSteps >= maxTravelSteps) {
+                            startRoleplayMode();
                         } else {
-                            setTimeout(() => loadRoleplayScenario(currentScenarioIdx), 800);
+                            spawnTravelStep();
                         }
-                    } else {
-                        const nextEl = sentenceContainerEl.querySelector(`.char-unit[data-index="${currentTargetIdx}"]`);
-                        if (nextEl) nextEl.classList.add('active');
+                    } else if (currentMode === 'ROLEPLAY') {
+                        const activeEl = sentenceContainerEl.querySelector(`.char-unit[data-index="${currentTargetIdx}"]`);
+                        if (activeEl) {
+                            activeEl.classList.remove('active');
+                            activeEl.classList.add('completed');
+                        }
+
+                        currentTargetIdx++;
+
+                        if (currentTargetIdx >= targetKanaList.length) {
+                            score += 150;
+                            scoreEl.innerText = score;
+                            currentScenarioIdx++;
+
+                            const dest = destinations[selectedDestKey];
+                            if (currentScenarioIdx >= dest.scenarios.length) {
+                                dest.visited = true;
+                                visitedSet.add(selectedDestKey);
+                                visitedCountEl.innerText = `${visitedSet.size}/3`;
+
+                                document.getElementById(`node-${dest.id}`).classList.remove('target');
+                                document.getElementById(`node-${dest.id}`).classList.add('completed');
+
+                                setTimeout(() => returnToHub(), 1000);
+                            } else {
+                                setTimeout(() => loadRoleplayScenario(currentScenarioIdx), 800);
+                            }
+                        } else {
+                            const nextEl = sentenceContainerEl.querySelector(`.char-unit[data-index="${currentTargetIdx}"]`);
+                            if (nextEl) nextEl.classList.add('active');
+                        }
                     }
                 }
+            } else {
+                // Reset step on miskey
+                subKeyStep = 0;
             }
         });
 
         function renderSingleKanaDisplay(kana) {
             sentenceContainerEl.innerHTML = '';
-            const keyHint = getMatchingKeyHint(kana);
+            const jisInfo = kanaJisData[kana] || { hint: '?' };
 
             const wrap = document.createElement('div');
             wrap.className = 'char-unit active';
@@ -670,7 +728,7 @@
 
             const hintSpan = document.createElement('span');
             hintSpan.className = 'key-hint';
-            hintSpan.innerText = `[${keyHint}]`;
+            hintSpan.innerText = `[${jisInfo.hint}]`;
 
             wrap.appendChild(kanaSpan);
             wrap.appendChild(hintSpan);
