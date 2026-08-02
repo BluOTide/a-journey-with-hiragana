@@ -31,7 +31,7 @@
         #game-box {
             position: relative;
             width: 900px; max-width: 95vw;
-            height: 650px;
+            height: 680px;
             background-color: var(--card-bg);
             border: 3px solid var(--accent-cyan);
             border-radius: 12px;
@@ -62,9 +62,9 @@
         .btn:hover { background: var(--accent-cyan); color: #000; }
         .btn.active { background: var(--accent-purple); border-color: var(--accent-purple); color: #000; }
 
-        /* Overworld Table-Top Map */
+        /* Overworld Map View */
         #map-container {
-            position: relative; height: 320px; background: #0c1520;
+            position: relative; height: 300px; background: #0c1520;
             border-bottom: 2px solid rgba(255,255,255,0.1);
             overflow: hidden;
         }
@@ -109,7 +109,7 @@
             z-index: 20; filter: drop-shadow(0 0 10px var(--accent-cyan));
         }
 
-        /* Directional Choice Overlays (Hub Mode) */
+        /* Directional Choice Overlays */
         .dir-choice {
             position: absolute; transform: translate(-50%, -50%);
             background: rgba(0, 0, 0, 0.9); border: 2px solid var(--accent-gold);
@@ -128,13 +128,18 @@
             background: rgba(0, 0, 0, 0.25); text-align: center;
         }
 
-        #dialogue-speaker { font-size: 0.95rem; color: var(--accent-cyan); margin-bottom: 4px; font-weight: bold; }
-        #mode-instruction { font-size: 1rem; color: var(--text-sub); margin-bottom: 10px; }
+        #dialogue-speaker { 
+            font-size: 1.1rem; color: var(--accent-gold); 
+            margin-bottom: 4px; font-weight: bold; 
+            letter-spacing: 0.5px;
+        }
+
+        #mode-instruction { font-size: 0.95rem; color: var(--text-sub); margin-bottom: 12px; }
 
         /* Sentence Display & Furigana */
         #sentence-container {
-            display: flex; gap: 8px; font-size: 2.2rem;
-            margin-bottom: 10px; min-height: 75px;
+            display: flex; gap: 8px; font-size: 2.1rem;
+            margin-bottom: 8px; min-height: 75px;
             align-items: flex-end; justify-content: center; flex-wrap: wrap;
         }
 
@@ -144,7 +149,7 @@
         }
 
         rt {
-            font-size: 1.05rem; color: var(--accent-purple);
+            font-size: 1rem; color: var(--accent-purple);
             font-weight: bold; letter-spacing: 1px; margin-bottom: 3px;
         }
 
@@ -174,7 +179,7 @@
 
         .show-hints .key-hint { display: inline-block; }
 
-        #english-translation { font-size: 1.1rem; color: var(--accent-cyan); font-style: italic; }
+        #english-translation { font-size: 1rem; color: var(--accent-cyan); font-style: italic; }
 
         /* Screen Overlay */
         #screen-overlay {
@@ -224,43 +229,43 @@
         <div id="map-container">
             <div id="map-canvas">
                 <svg id="path-svg">
-                    <line id="line-west" class="map-line" x1="450" y1="250" x2="160" y2="150" />
-                    <line id="line-north" class="map-line" x1="450" y1="250" x2="450" y2="65" />
-                    <line id="line-east" class="map-line" x1="450" y1="250" x2="740" y2="150" />
+                    <line id="line-west" class="map-line" x1="450" y1="230" x2="160" y2="140" />
+                    <line id="line-north" class="map-line" x1="450" y1="230" x2="450" y2="60" />
+                    <line id="line-east" class="map-line" x1="450" y1="230" x2="740" y2="140" />
                 </svg>
 
                 <!-- Destinations -->
-                <div class="node" id="node-west" style="left: 160px; top: 150px;">
+                <div class="node" id="node-west" style="left: 160px; top: 140px;">
                     <div class="node-icon">🌳</div>
                     <div class="node-label">West: Hinoyama Park</div>
                 </div>
 
-                <div class="node" id="node-north" style="left: 450px; top: 65px;">
+                <div class="node" id="node-north" style="left: 450px; top: 60px;">
                     <div class="node-icon">🐟</div>
                     <div class="node-label">North: Karato Market</div>
                 </div>
 
-                <div class="node" id="node-east" style="left: 740px; top: 150px;">
+                <div class="node" id="node-east" style="left: 740px; top: 140px;">
                     <div class="node-icon">🗼</div>
                     <div class="node-label">East: Tsunoshima Lighthouse</div>
                 </div>
 
-                <!-- Directional Choice Overlays (shown at hub) -->
-                <div id="choice-west" class="dir-choice" style="left: 290px; top: 220px;">
+                <!-- Directional Choice Overlays -->
+                <div id="choice-west" class="dir-choice" style="left: 290px; top: 200px;">
                     <div class="dir-key">にし [n]</div>
                     <div class="dir-label">← Hinoyama</div>
                 </div>
-                <div id="choice-north" class="dir-choice" style="left: 450px; top: 160px;">
+                <div id="choice-north" class="dir-choice" style="left: 450px; top: 145px;">
                     <div class="dir-key">きた [k]</div>
                     <div class="dir-label">↑ Karato</div>
                 </div>
-                <div id="choice-east" class="dir-choice" style="left: 610px; top: 220px;">
+                <div id="choice-east" class="dir-choice" style="left: 610px; top: 200px;">
                     <div class="dir-key">ひがし [h]</div>
                     <div class="dir-label">→ Tsunoshima</div>
                 </div>
 
                 <!-- Player Character Token -->
-                <div id="player-token" style="left: 450px; top: 250px;">🚶</div>
+                <div id="player-token" style="left: 450px; top: 230px;">🚶</div>
             </div>
         </div>
 
@@ -275,7 +280,7 @@
         <!-- Screen Overlay Modal -->
         <div id="screen-overlay">
             <h1 id="overlay-title">SHIMONOSEKI EXPLORER</h1>
-            <p id="overlay-desc">Explore Shimonoseki from a table-top view! Type directional Hiragana to travel to Karato Market, Hinoyama Park, or Tsunoshima Lighthouse, then practice authentic Japanese conversations!</p>
+            <p id="overlay-desc">Explore Shimonoseki through interactive Japanese dialogue! Type directional Hiragana to travel, then participate in full 2-person conversations at each famous location.</p>
             <button id="start-btn" onclick="handleOverlayClick()">START ADVENTURE</button>
         </div>
     </div>
@@ -285,9 +290,8 @@
         const DAKUTEN_KEYS = [']', '@', '['];
         const HANDAKUTEN_KEYS = ['[', '\\', '{'];
 
-        // Complete Keyboard Mapping Table: Hiragana -> Key Sequence(s)
+        // Complete Keyboard Mapping Table
         const kanaJisData = {
-            // Base Hiragana
             'あ': { keys: [['3']], hint: '3' },
             'い': { keys: [['e']], hint: 'E' },
             'う': { keys: [['4']], hint: '4' },
@@ -335,7 +339,6 @@
             'を': { keys: [['Shift+0']], hint: 'Shift+0' },
             'ん': { keys: [['y']], hint: 'Y' },
 
-            // Small Kana (Kogana)
             'ぁ': { keys: [['Shift+3']], hint: 'Shift+3' },
             'ぃ': { keys: [['Shift+e']], hint: 'Shift+E' },
             'ぅ': { keys: [['Shift+4']], hint: 'Shift+4' },
@@ -346,7 +349,6 @@
             'ゅ': { keys: [['Shift+8']], hint: 'Shift+8' },
             'ょ': { keys: [['Shift+9']], hint: 'Shift+9' },
 
-            // Dakuten Characters (Base Key + Dakuten Key ']')
             'が': { keys: [['t'], DAKUTEN_KEYS], hint: 'T → ]' },
             'ぎ': { keys: [['g'], DAKUTEN_KEYS], hint: 'G → ]' },
             'ぐ': { keys: [['h'], DAKUTEN_KEYS], hint: 'H → ]' },
@@ -368,7 +370,6 @@
             'べ': { keys: [['^', '='], DAKUTEN_KEYS], hint: '^ → ]' },
             'ぼ': { keys: [['-'], DAKUTEN_KEYS], hint: '- → ]' },
 
-            // Handakuten Characters (Base Key + Handakuten Key '[')
             'ぱ': { keys: [['f'], HANDAKUTEN_KEYS], hint: 'F → [' },
             'ぴ': { keys: [['v'], HANDAKUTEN_KEYS], hint: 'V → [' },
             'ぷ': { keys: [['2'], HANDAKUTEN_KEYS], hint: '2 → [' },
@@ -378,37 +379,53 @@
 
         const travelKanaPool = ['あ','い','う','え','お','か','き','く','け','こ','さ','し','す','せ','そ','た','ち','つ','て','と','ん','な','に','ぬ','ね','の'];
 
-        // Table-Top Destination Map Configuration
+        // Table-Top Destination Map & Multi-Speaker Conversations
         const destinations = {
             north: {
                 id: 'north',
                 name: "Karato Market",
-                coords: { x: 450, y: 65 },
+                coords: { x: 450, y: 60 },
                 startKey: 'k',
-                speaker: "Market Employee",
                 visited: false,
                 scenarios: [
                     {
-                        intro: "Welcome to Karato Market! Fresh seafood caught this morning!",
-                        en: '"Welcome! Looking for fresh fish?"',
+                        speaker: "🗣️ Vendor",
+                        en: '"Welcome! Fresh pufferfish (fugu) caught today!"',
                         tokens: [
                             { kanji: "いらっしゃいませ", furigana: ["い", "ら", "っ", "し", "ゃ", "い", "ま", "せ"] }
                         ]
                     },
                     {
-                        intro: "Customer: Pointing at the famous local pufferfish (Fugu) sushi...",
-                        en: '"I want to buy this Fugu sushi, please."',
+                        speaker: "👤 You (Customer)",
+                        en: '"How much is this pufferfish sushi?"',
                         tokens: [
+                            { kanji: "この", furigana: ["こ", "の"] },
                             { kanji: "ふぐ", furigana: ["ふ", "ぐ"] },
-                            { kanji: "の", furigana: ["の"] },
-                            { kanji: "寿司", furigana: ["す", "し"] },
+                            { kanji: "は", furigana: ["は"] },
+                            { kanji: "いくら", furigana: ["い", "く", "ら"] },
+                            { kanji: "ですか", furigana: ["で", "す", "か"] }
+                        ]
+                    },
+                    {
+                        speaker: "🗣️ Vendor",
+                        en: '"It is 500 yen!"',
+                        tokens: [
+                            { kanji: "五百円", furigana: ["ご", "ひ", "ゃ", "く", "え", "ん"] },
+                            { kanji: "です", furigana: ["で", "す"] }
+                        ]
+                    },
+                    {
+                        speaker: "👤 You (Customer)",
+                        en: '"I will take one please!"',
+                        tokens: [
+                            { kanji: "これ", furigana: ["こ", "れ"] },
                             { kanji: "を", furigana: ["を"] },
                             { kanji: "下", furigana: ["くだ"] },
                             { kanji: "さい", furigana: ["さ", "い"] }
                         ]
                     },
                     {
-                        intro: "Employee: Here is your total.",
+                        speaker: "🗣️ Vendor",
                         en: '"Thank you very much!"',
                         tokens: [
                             { kanji: "有", furigana: ["あ"] },
@@ -423,13 +440,12 @@
             west: {
                 id: 'west',
                 name: "Hinoyama Park",
-                coords: { x: 160, y: 150 },
+                coords: { x: 160, y: 140 },
                 startKey: 'n',
-                speaker: "Park Visitor",
                 visited: false,
                 scenarios: [
                     {
-                        intro: "At the summit of Hinoyama Park, overlooking the Kanmon Straits.",
+                        speaker: "🧑 Friend",
                         en: '"The mountain breeze feels so refreshing!"',
                         tokens: [
                             { kanji: "山", furigana: ["や", "ま"] },
@@ -441,32 +457,89 @@
                             { kanji: "良", furigana: ["よ"] },
                             { kanji: "い", furigana: ["い"] }
                         ]
+                    },
+                    {
+                        speaker: "👤 You",
+                        en: '"Yes! The Kanmon Straits view is amazing!"',
+                        tokens: [
+                            { kanji: "景色", furigana: ["け", "し", "き"] },
+                            { kanji: "が", furigana: ["が"] },
+                            { kanji: "綺麗", furigana: ["き", "れ", "い"] },
+                            { kanji: "ですね", furigana: ["で", "す", "ね"] }
+                        ]
+                    },
+                    {
+                        speaker: "🧑 Friend",
+                        en: '"Shall we take a photo together?"',
+                        tokens: [
+                            { kanji: "写真", furigana: ["しゃ", "し", "ん"] },
+                            { kanji: "を", furigana: ["を"] },
+                            { kanji: "撮", furigana: ["と"] },
+                            { kanji: "りましょう", furigana: ["り", "ま", "し", "ょ", "う"] }
+                        ]
+                    },
+                    {
+                        speaker: "👤 You",
+                        en: '"Great idea! Let us take one!"',
+                        tokens: [
+                            { kanji: "いい", furigana: ["い", "い"] },
+                            { kanji: "ですね", furigana: ["で", "す", "ね"] }
+                        ]
                     }
                 ]
             },
             east: {
                 id: 'east',
                 name: "Tsunoshima Lighthouse",
-                coords: { x: 740, y: 150 },
+                coords: { x: 740, y: 140 },
                 startKey: 'h',
-                speaker: "Tour Guide",
                 visited: false,
                 scenarios: [
                     {
-                        intro: "Welcome to the stunning white lighthouse overlooking the clear sea!",
+                        speaker: "👤 You (Tourist)",
+                        en: '"Excuse me, can I climb the lighthouse?"',
+                        tokens: [
+                            { kanji: "灯台", furigana: ["と", "う", "だ", "い"] },
+                            { kanji: "に", furigana: ["に"] },
+                            { kanji: "登", furigana: ["の"] },
+                            { kanji: "れますか", furigana: ["れ", "ま", "す", "か"] }
+                        ]
+                    },
+                    {
+                        speaker: "🧢 Lightkeeper Guide",
+                        en: '"Yes! You can climb to the top today."',
+                        tokens: [
+                            { kanji: "はい", furigana: ["は", "い"] },
+                            { kanji: "登", furigana: ["の"] },
+                            { kanji: "れます", furigana: ["れ", "ま", "す"] }
+                        ]
+                    },
+                    {
+                        speaker: "👤 You (Tourist)",
                         en: '"What a wonderful ocean view!"',
                         tokens: [
-                            { kanji: "素晴", furigana: ["す", "ば", "ら"] },
-                            { kanji: "らしい", furigana: ["し", "い"] },
-                            { kanji: "景色", furigana: ["け", "し", "き"] },
-                            { kanji: "ですね", furigana: ["で", "す", "ね"] }
+                            { kanji: "海", furigana: ["う", "み"] },
+                            { kanji: "が", furigana: ["が"] },
+                            { kanji: "青", furigana: ["あ", "お"] },
+                            { kanji: "くて", furigana: ["く", "て"] },
+                            { kanji: "綺麗", furigana: ["き", "れ", "い"] }
+                        ]
+                    },
+                    {
+                        speaker: "🧢 Lightkeeper Guide",
+                        en: '"Enjoy your time in Shimonoseki!"',
+                        tokens: [
+                            { kanji: "楽", furigana: ["た", "の"] },
+                            { kanji: "しんで", furigana: ["し", "ん", "で"] },
+                            { kanji: "下", furigana: ["くだ"] },
+                            { kanji: "さい", furigana: ["さ", "い"] }
                         ]
                     }
                 ]
             }
         };
 
-        const hubCoord = { x: 450, y: 250 };
+        const hubCoord = { x: 450, y: 230 };
 
         // Game State Variables
         let currentMode = 'HUB';
@@ -583,7 +656,7 @@
             const dest = destinations[selectedDestKey];
             const scenario = dest.scenarios[sIdx];
 
-            dialogueSpeakerEl.innerText = `${dest.speaker}: "${scenario.intro}"`;
+            dialogueSpeakerEl.innerText = scenario.speaker;
             modeInstructionEl.innerText = "Type the Furigana above the Kanji to continue the dialogue!";
             englishTranslationEl.innerText = scenario.en;
 
@@ -628,7 +701,7 @@
             });
         }
 
-        // Keyboard Event Processing
+        // Keyboard Event Listener
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && gameStarted) {
                 togglePause();
@@ -647,7 +720,7 @@
                 return;
             }
 
-            // Format key string
+            // Key formatting
             let pressedKeyStr = e.key;
             if (e.shiftKey && e.key.length === 1) {
                 pressedKeyStr = `Shift+${e.key.toLowerCase()}`;
@@ -658,7 +731,6 @@
 
             if (!kanaData) return;
 
-            // Check if key matches acceptable key options for this step
             const validKeysForStep = kanaData.keys[subKeyStep];
             const isMatch = validKeysForStep.some(k => 
                 k.toLowerCase() === pressedKeyStr.toLowerCase() || k === e.key
@@ -667,7 +739,6 @@
             if (isMatch) {
                 subKeyStep++;
 
-                // If sequence is fully matched
                 if (subKeyStep >= kanaData.keys.length) {
                     subKeyStep = 0;
                     score += 25;
@@ -716,7 +787,6 @@
                     }
                 }
             } else {
-                // Reset sequence step on miskey
                 subKeyStep = 0;
             }
         });
