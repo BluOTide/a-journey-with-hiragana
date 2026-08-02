@@ -281,96 +281,99 @@
     </div>
 
     <script>
-        // Complete JIS Layout Mapping Table: Hiragana -> Key Inputs Sequence
-        // Format: { kana: 'あ', keys: ['3'], hint: '3' }
+        // Dakuten and Handakuten aliases for ANSI / QWERTY keyboards
+        const DAKUTEN_KEYS = [']', '@', '['];
+        const HANDAKUTEN_KEYS = ['[', '\\', '{'];
+
+        // Complete Keyboard Mapping Table: Hiragana -> Key Sequence(s)
         const kanaJisData = {
             // Base Hiragana
-            'あ': { keys: ['3'], hint: '3' },
-            'い': { keys: ['e'], hint: 'E' },
-            'う': { keys: ['4'], hint: '4' },
-            'え': { keys: ['5'], hint: '5' },
-            'お': { keys: ['6'], hint: '6' },
-            'か': { keys: ['t'], hint: 'T' },
-            'き': { keys: ['g'], hint: 'G' },
-            'く': { keys: ['h'], hint: 'H' },
-            'け': { keys: [':'], hint: ':' },
-            'こ': { keys: ['b'], hint: 'B' },
-            'さ': { keys: ['x'], hint: 'X' },
-            'し': { keys: ['d'], hint: 'D' },
-            'す': { keys: ['r'], hint: 'R' },
-            'せ': { keys: ['p'], hint: 'P' },
-            'そ': { keys: ['c'], hint: 'C' },
-            'た': { keys: ['q'], hint: 'Q' },
-            'ち': { keys: ['a'], hint: 'A' },
-            'つ': { keys: ['z'], hint: 'Z' },
-            'て': { keys: ['w'], hint: 'W' },
-            'と': { keys: ['s'], hint: 'S' },
-            'な': { keys: ['u'], hint: 'U' },
-            'に': { keys: ['i'], hint: 'I' },
-            'ぬ': { keys: ['1'], hint: '1' },
-            'ね': { keys: [','], hint: ',' },
-            'の': { keys: ['k'], hint: 'K' },
-            'は': { keys: ['f'], hint: 'F' },
-            'ひ': { keys: ['v'], hint: 'V' },
-            'ふ': { keys: ['2'], hint: '2' },
-            'へ': { keys: ['^'], hint: '^' },
-            'ほ': { keys: ['-'], hint: '-' },
-            'ま': { keys: ['j'], hint: 'J' },
-            'み': { keys: ['n'], hint: 'N' },
-            'む': { keys: [']'], hint: ']' },
-            'め': { keys: ['/'], hint: '/' },
-            'も': { keys: ['m'], hint: 'M' },
-            'や': { keys: ['7'], hint: '7' },
-            'ゆ': { keys: ['8'], hint: '8' },
-            'よ': { keys: ['9'], hint: '9' },
-            'ら': { keys: ['o'], hint: 'O' },
-            'り': { keys: ['l'], hint: 'L' },
-            'る': { keys: ['.'], hint: '.' },
-            'れ': { keys: [';'], hint: ';' },
-            'ろ': { keys: ['\\'], hint: '\\' },
-            'わ': { keys: ['0'], hint: '0' },
-            'を': { keys: ['Shift+0'], hint: 'Shift+0' },
-            'ん': { keys: ['y'], hint: 'Y' },
+            'あ': { keys: [['3']], hint: '3' },
+            'い': { keys: [['e']], hint: 'E' },
+            'う': { keys: [['4']], hint: '4' },
+            'え': { keys: [['5']], hint: '5' },
+            'お': { keys: [['6']], hint: '6' },
+            'か': { keys: [['t']], hint: 'T' },
+            'き': { keys: [['g']], hint: 'G' },
+            'く': { keys: [['h']], hint: 'H' },
+            'け': { keys: [["'", ':']], hint: "'" },
+            'こ': { keys: [['b']], hint: 'B' },
+            'さ': { keys: [['x']], hint: 'X' },
+            'し': { keys: [['d']], hint: 'D' },
+            'す': { keys: [['r']], hint: 'R' },
+            'せ': { keys: [['p']], hint: 'P' },
+            'そ': { keys: [['c']], hint: 'C' },
+            'た': { keys: [['q']], hint: 'Q' },
+            'ち': { keys: [['a']], hint: 'A' },
+            'つ': { keys: [['z']], hint: 'Z' },
+            'て': { keys: [['w']], hint: 'W' },
+            'と': { keys: [['s']], hint: 'S' },
+            'な': { keys: [['u']], hint: 'U' },
+            'に': { keys: [['i']], hint: 'I' },
+            'ぬ': { keys: [['1']], hint: '1' },
+            'ね': { keys: [[',']], hint: ',' },
+            'の': { keys: [['k']], hint: 'K' },
+            'は': { keys: [['f']], hint: 'F' },
+            'ひ': { keys: [['v']], hint: 'V' },
+            'ふ': { keys: [['2']], hint: '2' },
+            'へ': { keys: [['^', '=']], hint: '^' },
+            'ほ': { keys: [['-']], hint: '-' },
+            'ま': { keys: [['j']], hint: 'J' },
+            'み': { keys: [['n']], hint: 'N' },
+            'む': { keys: [[']', '\\']], hint: ']' },
+            'め': { keys: [['/']], hint: '/' },
+            'も': { keys: [['m']], hint: 'M' },
+            'や': { keys: [['7']], hint: '7' },
+            'ゆ': { keys: [['8']], hint: '8' },
+            'よ': { keys: [['9']], hint: '9' },
+            'ら': { keys: [['o']], hint: 'O' },
+            'り': { keys: [['l']], hint: 'L' },
+            'る': { keys: [['.']], hint: '.' },
+            'れ': { keys: [[';']], hint: ';' },
+            'ろ': { keys: [['\\']], hint: '\\' },
+            'わ': { keys: [['0']], hint: '0' },
+            'を': { keys: [['Shift+0']], hint: 'Shift+0' },
+            'ん': { keys: [['y']], hint: 'Y' },
 
             // Small Kana (Kogana)
-            'ぁ': { keys: ['Shift+3'], hint: 'Shift+3' },
-            'ぃ': { keys: ['Shift+e'], hint: 'Shift+E' },
-            'ぅ': { keys: ['Shift+4'], hint: 'Shift+4' },
-            'ぇ': { keys: ['Shift+5'], hint: 'Shift+5' },
-            'ぉ': { keys: ['Shift+6'], hint: 'Shift+6' },
-            'っ': { keys: ['Shift+z'], hint: 'Shift+Z' },
-            'ゃ': { keys: ['Shift+7'], hint: 'Shift+7' },
-            'ゅ': { keys: ['Shift+8'], hint: 'Shift+8' },
-            'ょ': { keys: ['Shift+9'], hint: 'Shift+9' },
+            'ぁ': { keys: [['Shift+3']], hint: 'Shift+3' },
+            'ぃ': { keys: [['Shift+e']], hint: 'Shift+E' },
+            'ぅ': { keys: [['Shift+4']], hint: 'Shift+4' },
+            'ぇ': { keys: [['Shift+5']], hint: 'Shift+5' },
+            'ぉ': { keys: [['Shift+6']], hint: 'Shift+6' },
+            'っ': { keys: [['Shift+z']], hint: 'Shift+Z' },
+            'ゃ': { keys: [['Shift+7']], hint: 'Shift+7' },
+            'ゅ': { keys: [['Shift+8']], hint: 'Shift+8' },
+            'ょ': { keys: [['Shift+9']], hint: 'Shift+9' },
 
-            // Dakuten Characters (Base Key + '@')
-            'が': { keys: ['t', '@'], hint: 'T → @' },
-            'ぎ': { keys: ['g', '@'], hint: 'G → @' },
-            'ぐ': { keys: ['h', '@'], hint: 'H → @' },
-            'げ': { keys: [':', '@'], hint: ': → @' },
-            'ご': { keys: ['b', '@'], hint: 'B → @' },
-            'ざ': { keys: ['x', '@'], hint: 'X → @' },
-            'じ': { keys: ['d', '@'], hint: 'D → @' },
-            'ず': { keys: ['r', '@'], hint: 'R → @' },
-            'ぜ': { keys: ['p', '@'], hint: 'P → @' },
-            'ぞ': { keys: ['c', '@'], hint: 'C → @' },
-            'だ': { keys: ['q', '@'], hint: 'Q → @' },
-            'ぢ': { keys: ['a', '@'], hint: 'A → @' },
-            'づ': { keys: ['z', '@'], hint: 'Z → @' },
-            'で': { keys: ['w', '@'], hint: 'W → @' },
-            'ど': { keys: ['s', '@'], hint: 'S → @' },
-            'ば': { keys: ['f', '@'], hint: 'F → @' },
-            'び': { keys: ['v', '@'], hint: 'V → @' },
-            'ぶ': { keys: ['2', '@'], hint: '2 → @' },
-            'べ': { keys: ['^', '@'], hint: '^ → @' },
-            'ぼ': { keys: ['-', '@'], hint: '- → @' },
+            // Dakuten Characters (Base Key + Dakuten Key ']')
+            'が': { keys: [['t'], DAKUTEN_KEYS], hint: 'T → ]' },
+            'ぎ': { keys: [['g'], DAKUTEN_KEYS], hint: 'G → ]' },
+            'ぐ': { keys: [['h'], DAKUTEN_KEYS], hint: 'H → ]' },
+            'げ': { keys: [["'", ':'], DAKUTEN_KEYS], hint: "' → ]" },
+            'ご': { keys: [['b'], DAKUTEN_KEYS], hint: 'B → ]' },
+            'ざ': { keys: [['x'], DAKUTEN_KEYS], hint: 'X → ]' },
+            'じ': { keys: [['d'], DAKUTEN_KEYS], hint: 'D → ]' },
+            'ず': { keys: [['r'], DAKUTEN_KEYS], hint: 'R → ]' },
+            'ぜ': { keys: [['p'], DAKUTEN_KEYS], hint: 'P → ]' },
+            'ぞ': { keys: [['c'], DAKUTEN_KEYS], hint: 'C → ]' },
+            'だ': { keys: [['q'], DAKUTEN_KEYS], hint: 'Q → ]' },
+            'ぢ': { keys: [['a'], DAKUTEN_KEYS], hint: 'A → ]' },
+            'づ': { keys: [['z'], DAKUTEN_KEYS], hint: 'Z → ]' },
+            'で': { keys: [['w'], DAKUTEN_KEYS], hint: 'W → ]' },
+            'ど': { keys: [['s'], DAKUTEN_KEYS], hint: 'S → ]' },
+            'ば': { keys: [['f'], DAKUTEN_KEYS], hint: 'F → ]' },
+            'び': { keys: [['v'], DAKUTEN_KEYS], hint: 'V → ]' },
+            'ぶ': { keys: [['2'], DAKUTEN_KEYS], hint: '2 → ]' },
+            'べ': { keys: [['^', '='], DAKUTEN_KEYS], hint: '^ → ]' },
+            'ぼ': { keys: [['-'], DAKUTEN_KEYS], hint: '- → ]' },
 
-            // Handakuten Characters (Base Key + '[')
-            'ぱ': { keys: ['f', '['], hint: 'F → [' },
-            'ぴ': { keys: ['v', '['], hint: 'V → [' },
-            'ぷ': { keys: ['2', '['], hint: '2 → [' },
-            'ぺ': { keys: ['^', '['], hint: '^ → [' },
-            'ぽ': { keys: ['-', '['], hint: '- → [' }
+            // Handakuten Characters (Base Key + Handakuten Key '[')
+            'ぱ': { keys: [['f'], HANDAKUTEN_KEYS], hint: 'F → [' },
+            'ぴ': { keys: [['v'], HANDAKUTEN_KEYS], hint: 'V → [' },
+            'ぷ': { keys: [['2'], HANDAKUTEN_KEYS], hint: '2 → [' },
+            'ぺ': { keys: [['^', '='], HANDAKUTEN_KEYS], hint: '^ → [' },
+            'ぽ': { keys: [['-'], HANDAKUTEN_KEYS], hint: '- → [' }
         };
 
         const travelKanaPool = ['あ','い','う','え','お','か','き','く','け','こ','さ','し','す','せ','そ','た','ち','つ','て','と','ん','な','に','ぬ','ね','の'];
@@ -466,14 +469,14 @@
         const hubCoord = { x: 450, y: 250 };
 
         // Game State Variables
-        let currentMode = 'HUB'; // 'HUB', 'TRAVEL', or 'ROLEPLAY'
+        let currentMode = 'HUB';
         let selectedDestKey = null;
         let travelSteps = 0;
         let maxTravelSteps = 4;
         let currentScenarioIdx = 0;
         let targetKanaList = [];
         let currentTargetIdx = 0;
-        let subKeyStep = 0; // Tracks multi-keystroke input (e.g. dakuten/handakuten)
+        let subKeyStep = 0;
         let visitedSet = new Set();
         let score = 0;
         let isPaused = false;
@@ -644,7 +647,7 @@
                 return;
             }
 
-            // Construct keystroke string (e.g. '3', 't', 'Shift+3', '@', '[')
+            // Format key string
             let pressedKeyStr = e.key;
             if (e.shiftKey && e.key.length === 1) {
                 pressedKeyStr = `Shift+${e.key.toLowerCase()}`;
@@ -655,10 +658,13 @@
 
             if (!kanaData) return;
 
-            // Check if input matches the required step in key sequence
-            const requiredKey = kanaData.keys[subKeyStep];
+            // Check if key matches acceptable key options for this step
+            const validKeysForStep = kanaData.keys[subKeyStep];
+            const isMatch = validKeysForStep.some(k => 
+                k.toLowerCase() === pressedKeyStr.toLowerCase() || k === e.key
+            );
 
-            if (pressedKeyStr === requiredKey || pressedKeyStr.toLowerCase() === requiredKey) {
+            if (isMatch) {
                 subKeyStep++;
 
                 // If sequence is fully matched
@@ -710,7 +716,7 @@
                     }
                 }
             } else {
-                // Reset step on miskey
+                // Reset sequence step on miskey
                 subKeyStep = 0;
             }
         });
